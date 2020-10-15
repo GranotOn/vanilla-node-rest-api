@@ -34,5 +34,11 @@
     "title": "Test Product",
     "description": "This is my product",
     "price": 100
+  },
+  {
+    "id": "1949b2b8-2175-4544-aeba-f6eb447b90cb",
+    "title": "curl-request",
+    "description": "post from curl",
+    "price": "priceless"
   }
 ]
