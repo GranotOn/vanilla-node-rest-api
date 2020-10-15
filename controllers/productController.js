@@ -24,9 +24,28 @@ async function getProduct(req, res, id) {
       res.writeHead(200, { "Content-Type": "application/json" });
       res.end(JSON.stringify(product));
     } else {
-        res.writeHead(404, { 'Content-Type': "text/html" });
-        res.end("<h1>404 Product Not Found </h1>");
+      res.writeHead(404, { "Content-Type": "text/html" });
+      res.end("<h1>404 Product Not Found </h1>");
     }
+  } catch (error) {
+    console.log(error);
+    // Pass to error handler
+  }
+}
+
+// @desc    Create A Product
+// @route   POST /api/products
+async function createProduct(req, res) {
+  try {
+    const product = {
+      title: "Test Product",
+      description: "This is my product",
+      price: 100,
+    };
+
+    const newProduct = await Product.create(product);
+    res.writeHead(201, { "Content-Type": "application/json" });
+    return res.end(JSON.stringify(newProduct));
   } catch (error) {
     console.log(error);
     // Pass to error handler
@@ -36,4 +55,5 @@ async function getProduct(req, res, id) {
 module.exports = {
   getProducts,
   getProduct,
+  createProduct,
 };
