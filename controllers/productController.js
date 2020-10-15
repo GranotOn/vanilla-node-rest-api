@@ -1,4 +1,5 @@
 const Product = require("../models/productModel.js");
+const { getPostData } = require("../utils.js");
 
 // async because we used promise for good practices
 
@@ -37,26 +38,18 @@ async function getProduct(req, res, id) {
 // @route   POST /api/products
 async function createProduct(req, res) {
   try {
-    let body = '';
-    // Handle data buffer (I appreciate Express)
-    req.on('data', (chunk) => {
-        body += chunk.toString();
-    });
+    const body = await getPostData(req);
+    const { title, description, price } = JSON.parse(body);
 
-    req.on('end', async () => {
-        const { title, description, price } = JSON.parse(body);
+    const product = {
+      title,
+      description,
+      price,
+    };
 
-        const product = {
-            title,
-            description,
-            price,
-          };
-
-
-        const newProduct = await Product.create(product);
-        res.writeHead(201, { "Content-Type": "application/json" });
-        return res.end(JSON.stringify(newProduct));
-    });
+    const newProduct = await Product.create(product);
+    res.writeHead(201, { "Content-Type": "application/json" });
+    return res.end(JSON.stringify(newProduct));
   } catch (error) {
     console.log(error);
     // Pass to error handler
